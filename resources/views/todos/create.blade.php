@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Todo - Anti-Pattern Demo</title>
+    <title>Create Todo</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
@@ -22,11 +22,8 @@
                 </div>
             @endif
 
-            <!-- ANTI-PATTERN #4: Form without CSRF protection -->
             <div class="bg-white shadow-md rounded-lg p-6">
                 <form method="POST" action="/todos">
-                    <!-- Missing @csrf token - MAJOR SECURITY VULNERABILITY -->
-
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
                         <input type="text"
@@ -65,7 +62,6 @@
                                 name="category_id"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Select Category (Optional)</option>
-                            <!-- Data from controller's N+1 queries -->
                             @foreach($processedCategories as $item)
                                 <option value="{{ $item['category']->id }}"
                                         {{ old('category_id') == $item['category']->id ? 'selected' : '' }}>
@@ -76,7 +72,6 @@
                         <p class="text-sm text-gray-500 mt-1">If no category is selected, it will be auto-assigned to "General"</p>
                     </div>
 
-                    <!-- Hidden field for user_id - In a real app, this would come from auth -->
                     <input type="hidden" name="user_id" value="1">
 
                     <div class="mb-6">
@@ -103,11 +98,9 @@
                 </form>
             </div>
 
-            <!-- ANTI-PATTERN #4: Another form without CSRF protection for quick category creation -->
             <div class="bg-white shadow-md rounded-lg p-6 mt-6">
                 <h3 class="text-lg font-semibold mb-4">Quick Create Category</h3>
                 <form method="POST" action="#" class="flex space-x-2">
-                    <!-- Missing @csrf token here too -->
                     <input type="text"
                            name="category_name"
                            placeholder="Category name..."
@@ -122,30 +115,11 @@
                     </button>
                 </form>
             </div>
-
-            <div class="mt-6 text-sm text-gray-600">
-                <div class="bg-red-50 border-l-4 border-red-400 p-4">
-                    <div class="flex">
-                        <div class="ml-3">
-                            <p class="text-sm text-red-700">
-                                <strong>⚠️ SECURITY WARNING - Anti-pattern demonstrated:</strong><br>
-                                • <strong>No CSRF Protection:</strong> Both forms are missing @csrf tokens<br>
-                                • <strong>Mass Assignment:</strong> Form data is passed directly to create() method<br>
-                                • <strong>N+1 Queries:</strong> Category dropdown loaded with inefficient queries<br>
-                                • <strong>Hardcoded User ID:</strong> No proper authentication check
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        // ANTI-PATTERN: Inline JavaScript in Blade templates
-        // This should be in separate JS files
         document.addEventListener('DOMContentLoaded', function() {
-            // Unsafe DOM manipulation without CSRF consideration
             const form = document.querySelector('form');
             form.addEventListener('submit', function(e) {
                 const title = document.getElementById('title').value;

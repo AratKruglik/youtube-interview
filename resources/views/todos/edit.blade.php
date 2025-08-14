@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Todo - Anti-Pattern Demo</title>
+    <title>Edit Todo</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
@@ -35,11 +35,9 @@
                 </div>
             @endif
 
-            <!-- ANTI-PATTERN #4: Form without CSRF protection -->
             <div class="bg-white shadow-md rounded-lg p-6">
                 <form method="POST" action="/todos/{{ $todo->id }}">
                     @method('PATCH')
-                    <!-- Missing @csrf token - MAJOR SECURITY VULNERABILITY -->
 
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
@@ -136,7 +134,6 @@
                 <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
                 <div class="flex space-x-4">
 
-                    <!-- ANTI-PATTERN #4: Multiple forms without CSRF protection -->
                     @if(!$todo->completed)
                         <form method="POST" action="/todos/{{ $todo->id }}" class="inline">
                             @method('PATCH')
@@ -202,23 +199,6 @@
                 </form>
             </div>
 
-            <div class="mt-6 text-sm text-gray-600">
-                <div class="bg-red-50 border-l-4 border-red-400 p-4">
-                    <div class="flex">
-                        <div class="ml-3">
-                            <p class="text-sm text-red-700">
-                                <strong>⚠️ CRITICAL SECURITY VULNERABILITIES - Anti-patterns demonstrated:</strong><br>
-                                • <strong>No CSRF Protection:</strong> All 5 forms are missing @csrf tokens<br>
-                                • <strong>Mass Assignment:</strong> Form data passed directly to update() method<br>
-                                • <strong>N+1 Queries:</strong> Category options loaded inefficiently in controller<br>
-                                • <strong>Hidden User ID:</strong> User ID can be manipulated in form data<br>
-                                • <strong>No Authorization:</strong> No check if user can edit this todo<br>
-                                • <strong>Bulk Operations:</strong> Dangerous bulk update without proper validation
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
