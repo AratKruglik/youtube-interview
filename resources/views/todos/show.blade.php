@@ -71,7 +71,6 @@
                     </div>
 
                     <div>
-                        <!-- Data from N+1 queries in controller -->
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Assigned To</label>
                             <div class="p-3 bg-gray-50 rounded-md">
@@ -110,7 +109,6 @@
                 </div>
             </div>
 
-            <!-- Statistics from Fat Controller Logic -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="text-2xl font-bold text-blue-600">{{ $statistics['user_total_todos'] }}</div>
@@ -135,7 +133,6 @@
                 </div>
             </div>
 
-            <!-- Similar Todos (from additional N+1 queries) -->
             @if($statistics['similar_todos']->count() > 0)
             <div class="bg-white shadow-md rounded-lg p-6 mb-6">
                 <h3 class="text-lg font-semibold mb-4">Similar Todos (Same Category & Priority)</h3>
@@ -161,16 +158,14 @@
             </div>
             @endif
 
-            <!-- Quick Actions with CSRF Vulnerabilities -->
             <div class="bg-white shadow-md rounded-lg p-6">
                 <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
                 <div class="flex space-x-4">
 
-                    <!-- ANTI-PATTERN #4: Form without CSRF protection -->
                     @if(!$todo->completed)
                         <form method="POST" action="/todos/{{ $todo->id }}" class="inline">
                             @method('PATCH')
-                            <!-- Missing @csrf token -->
+
                             <input type="hidden" name="completed" value="1">
                             <input type="hidden" name="title" value="{{ $todo->title }}">
                             <input type="hidden" name="description" value="{{ $todo->description }}">
@@ -185,7 +180,7 @@
                     @else
                         <form method="POST" action="/todos/{{ $todo->id }}" class="inline">
                             @method('PATCH')
-                            <!-- Missing @csrf token -->
+
                             <input type="hidden" name="completed" value="0">
                             <input type="hidden" name="title" value="{{ $todo->title }}">
                             <input type="hidden" name="description" value="{{ $todo->description }}">
@@ -201,29 +196,13 @@
 
                     <form method="POST" action="/todos/{{ $todo->id }}" class="inline">
                         @method('DELETE')
-                        <!-- Missing @csrf token -->
+
                         <button type="submit"
                                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                 onclick="return confirm('Are you sure you want to delete this todo?')">
                             Delete Todo
                         </button>
                     </form>
-                </div>
-            </div>
-
-            <div class="mt-6 text-sm text-gray-600">
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                    <div class="flex">
-                        <div class="ml-3">
-                            <p class="text-sm text-yellow-700">
-                                <strong>Anti-patterns demonstrated on this page:</strong><br>
-                                • <strong>N+1 Problem:</strong> User and category data loaded with separate queries<br>
-                                • <strong>Fat Controller:</strong> Statistics calculated in controller with multiple queries<br>
-                                • <strong>No CSRF Protection:</strong> Quick action forms missing @csrf tokens<br>
-                                • <strong>Similar Todos:</strong> Loaded with additional inefficient queries
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

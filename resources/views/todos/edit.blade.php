@@ -129,7 +129,6 @@
                 </div>
             </div>
 
-            <!-- Quick Actions without CSRF -->
             <div class="bg-white shadow-md rounded-lg p-6 mt-6">
                 <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
                 <div class="flex space-x-4">
@@ -137,7 +136,6 @@
                     @if(!$todo->completed)
                         <form method="POST" action="/todos/{{ $todo->id }}" class="inline">
                             @method('PATCH')
-                            <!-- Missing @csrf token -->
                             <input type="hidden" name="completed" value="1">
                             <input type="hidden" name="title" value="{{ $todo->title }}">
                             <input type="hidden" name="description" value="{{ $todo->description }}">
@@ -153,7 +151,6 @@
 
                     <form method="POST" action="/todos/{{ $todo->id }}" class="inline">
                         @method('PATCH')
-                        <!-- Missing @csrf token -->
                         <input type="hidden" name="priority" value="urgent">
                         <input type="hidden" name="title" value="{{ $todo->title }}">
                         <input type="hidden" name="description" value="{{ $todo->description }}">
@@ -168,7 +165,6 @@
 
                     <form method="POST" action="/todos/{{ $todo->id }}" class="inline">
                         @method('DELETE')
-                        <!-- Missing @csrf token -->
                         <button type="submit"
                                 class="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
                                 onclick="return confirm('Are you sure you want to delete this todo?')">
@@ -178,13 +174,11 @@
                 </div>
             </div>
 
-            <!-- Bulk Edit Form (Another CSRF vulnerability) -->
             <div class="bg-white shadow-md rounded-lg p-6 mt-6">
                 <h3 class="text-lg font-semibold mb-4">Bulk Priority Update</h3>
                 <p class="text-sm text-gray-600 mb-4">Update priority for all todos in the same category</p>
 
                 <form method="POST" action="#" class="flex space-x-2">
-                    <!-- Missing @csrf token -->
                     <input type="hidden" name="category_id" value="{{ $todo->category_id }}">
                     <select name="new_priority" class="flex-1 px-3 py-2 border border-gray-300 rounded-md">
                         <option value="low">Low Priority</option>

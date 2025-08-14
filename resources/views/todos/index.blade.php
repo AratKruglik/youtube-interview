@@ -27,8 +27,6 @@
             </div>
         @endif
 
-        <!-- ANTI-PATTERN #1: Displaying N+1 problem results -->
-        <!-- This view shows data that was fetched using N+1 queries -->
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -55,12 +53,10 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <!-- Data from N+1 query -->
                                 <div class="text-sm text-gray-900">{{ $item['user']['name'] ?? 'Unknown' }}</div>
                                 <div class="text-sm text-gray-500">{{ $item['user']['email'] ?? '' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <!-- Data from another N+1 query -->
                                 @if($item['category'])
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                                           style="background-color: {{ $item['category']['color'] }}20; color: {{ $item['category']['color'] }}">
@@ -98,11 +94,8 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="/todos/{{ $item['todo']['id'] }}" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
                                 <a href="/todos/{{ $item['todo']['id'] }}/edit" class="text-yellow-600 hover:text-yellow-900 mr-3">Edit</a>
-
-                                <!-- ANTI-PATTERN #4: Form without CSRF protection -->
                                 <form method="POST" action="/todos/{{ $item['todo']['id'] }}" class="inline">
                                     @method('DELETE')
-                                    <!-- Missing @csrf token - SECURITY VULNERABILITY -->
                                     <button type="submit" class="text-red-600 hover:text-red-900"
                                             onclick="return confirm('Are you sure you want to delete this todo?')">
                                         Delete
@@ -111,7 +104,6 @@
                             </td>
                         </tr>
 
-                        <!-- Display related todos (from additional N+1 queries) -->
                         @if($item['related_todos']->count() > 0)
                             <tr class="bg-gray-50">
                                 <td colspan="7" class="px-6 py-2">
@@ -133,22 +125,6 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
-
-        <div class="mt-6 text-sm text-gray-600">
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                <div class="flex">
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700">
-                            <strong>Anti-patterns demonstrated:</strong><br>
-                            • N+1 Problem: Each todo triggers separate queries for user and category<br>
-                            • Database queries in loops for related todos<br>
-                            • Forms without CSRF protection<br>
-                            • Fat controller logic processing data
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>
