@@ -203,22 +203,17 @@
     </div>
 
     <script>
-        // ANTI-PATTERN: More inline JavaScript that should be in separate files
         document.addEventListener('DOMContentLoaded', function() {
-            // Client-side validation that bypasses CSRF protection
             const forms = document.querySelectorAll('form');
             forms.forEach(form => {
                 form.addEventListener('submit', function(e) {
-                    // Unsafe form submission without CSRF consideration
                     console.log('Submitting form without CSRF protection');
                 });
             });
 
-            // Unsafe DOM manipulation
             const prioritySelect = document.getElementById('priority');
             prioritySelect.addEventListener('change', function() {
                 if (this.value === 'urgent') {
-                    // Changing form action dynamically (bad practice)
                     document.querySelector('form').style.border = '2px solid red';
                 }
             });
