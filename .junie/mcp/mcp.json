@@ -1,20 +1,15 @@
 {
     "mcpServers": {
       "laravel-boost": {
-        "command": "sail",
+        "command": "docker",
         "args": [
-          "artisan",
+          "exec",
+          "-i",
+          "laravel-interview-laravel.test-1",
+          "php",
+          "/var/www/html/artisan",
           "boost:mcp"
         ]
-      },
-        "herd": {
-            "command": "php",
-            "args": [
-                "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
-            ],
-            "env": {
-                "SITE_PATH": "/Users/oleksii/Projects/Youtube/laravel-interview"
-            }
-        }
+      }
     }
 }
